@@ -12,9 +12,35 @@
 
 {% block content %}
     <div>
-        <p>This is a test</p>
-        <a href="{% url 'display:main' %}">Click here to display models</a>
+        <a href="{% url 'display:main' %}">Click here to create, update or delete models</a>
     </div>
+
+    <h3>Events</h3>
+    {% if event_list %}
+        <ul>
+            {% for event in event_list %}
+                <li>
+                    <b>{{ event }}</b> at {{ event.date }} {{ event.time }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no event in the library.</p>
+    {% endif %}
+
+    <h3>Practices</h3>
+    {% if practice_list %}
+    <ul>
+        {% for practice in practice_list %}
+        <li>
+            <b>{{ practice }}</b>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>There are no practices scheduled.</p>
+    {% endif %}
+
 {% endblock %}
 
 {% block footer %} {% endblock %}
