@@ -1,18 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
-        <title>Universe</title>
-        <meta charset="utf-8"><!-- html5 version of http-equiv="Content-Type"... -->
-        <meta name="description" content="{{description}}">
-        <meta name="keywords" content="{{keywords}}">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="author" href="https://plus.google.com/{{googlePlusId}}" />
-        <link rel="canonical" href="{{pageUrl}}" />
+        {% extends "base_bootstrap.html" %}
     </head>
     <body>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/schedule">Schedule</a>
-        </nav>
+        {% block content %}
+
+        <h1>Hello! Welcome to the temporary welcome page for Hall 1 JamBand!</h1>
+    
+        {% endblock %}
     </body>
 </html>
