@@ -81,8 +81,6 @@ class BandMember(models.Model):
 class Practice(models.Model):
     band = models.ForeignKey('Band', models.CASCADE, null=False)
 
-    event = models.ForeignKey('Event', models.CASCADE, null=False)
-
     startTime = models.DateTimeField()
 
     endTime = models.DateTimeField()
