@@ -1,4 +1,7 @@
 howToDoStuff.txt
+AY23_24 Members Details.csv
+import_members.py
+
 # Django #
 *.log
 *.pot

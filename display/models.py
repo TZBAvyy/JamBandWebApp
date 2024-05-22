@@ -40,7 +40,7 @@ class MemberSection(models.Model):
 
     def __str__(self):
         """String for representing the MemberSections object."""
-        return f"{self.member} AS {self.section}"
+        return f"{self.member} (Level {self.proficiency} {self.section})"
 
 
 class Event(models.Model):
@@ -78,16 +78,18 @@ class BandMember(models.Model):
 
     def __str__(self):
         """String for representing the BandMembers object."""
-        return f"{self.member} AS {self.section} IN {self.band}"
+        return f"{self.member} ({self.section}) IN {self.band}"
     
 class Practice(models.Model):
     band = models.ForeignKey('Band', models.CASCADE, null=False)
 
-    startTime = models.DateTimeField()
+    date = models.DateField()
 
-    endTime = models.DateTimeField()
+    startTime = models.TimeField()
+
+    endTime = models.TimeField()
 
     def __str__(self):
         """String for representing the Practices object."""
-        return f"{self.band} USING FOR {self.event} FROM {self.startTime} TO {self.endTime}"
+        return f"{self.band} ON {self.date} FROM {self.startTime} TO {self.endTime}"
     

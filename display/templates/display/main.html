@@ -31,38 +31,20 @@
     {% endif %}
 
     <h3>Practices</h3>
+    <a href="{% url 'display:practice_create' %}">Schedule a practice</a>
     {% if practice_list %}
     <ul>
         {% for practice in practice_list %}
-            <li>{{ practice }}</li>
+        <li>
+            <b>{{ practice }}</b>
+            (<a href="{% url 'display:practice_update' practice.id %}">Update</a> |
+            <a href="{% url 'display:practice_delete' practice.id %}">Delete</a>)
+        </li>
         {% endfor %}
     </ul>
     {% else %}
         <p>There are no practices scheduled.</p>
     {% endif %}
-
-    <h3>Section</h3>
-        {% if section_list %}
-        <ul>
-            {% for section in section_list %}
-                <li>{{ section }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>There are no sections in the library.</p> 
-    {% endif %}
-
-    <h3>Members</h3>
-    {% if member_list %}
-        <ul>
-            {% for member in member_list %}
-                <li>{{ member }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>There are no members in the library.</p>
-    {% endif %}
-
 
 {% endblock %}
 
