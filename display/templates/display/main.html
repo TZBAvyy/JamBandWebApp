@@ -20,7 +20,7 @@
         <ul>
             {% for event in event_list %}
                 <li>
-                    {{ event }}
+                    <b>{{ event }}</b> at {{ event.date }} {{ event.time }}
                     (<a href="{% url 'display:event_update' event.id %}">Update</a> |
                     <a href="{% url 'display:event_delete' event.id %}">Delete</a>)
                 </li>
@@ -28,6 +28,17 @@
         </ul>
     {% else %}
         <p>There are no event in the library.</p>
+    {% endif %}
+
+    <h3>Practices</h3>
+    {% if practice_list %}
+    <ul>
+        {% for practice in practice_list %}
+            <li>{{ practice }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>There are no practices scheduled.</p>
     {% endif %}
 
     <h3>Section</h3>
@@ -50,17 +61,6 @@
         </ul>
     {% else %}
         <p>There are no members in the library.</p>
-    {% endif %}
-
-    <h3>Practices</h3>
-    {% if practice_list %}
-    <ul>
-        {% for practice in practice_list %}
-            <li>{{ practice }}</li>
-        {% endfor %}
-    </ul>
-    {% else %}
-        <p>There are no practices in the library.</p>
     {% endif %}
 
 

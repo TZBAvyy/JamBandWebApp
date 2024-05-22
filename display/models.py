@@ -48,7 +48,9 @@ class Event(models.Model):
             max_length=200,
             validators=[MinLengthValidator(2, "Event name must be greater than 1 character")]
     )
-    date = models.DateTimeField()
+    date = models.DateField()
+    
+    time = models.TimeField()
 
     # Shows up in the admin list
     def __str__(self):
