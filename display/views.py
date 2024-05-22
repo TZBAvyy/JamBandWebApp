@@ -6,10 +6,10 @@ from django.views.generic import TemplateView
 from django.views import View
 from django.views.generic.detail import DetailView
 
-from home.models import *
+from display.models import *
 from django.apps import apps
 
-app = apps.get_app_config('home')
+app = apps.get_app_config('display')
 
 # Create your views here.
 
@@ -18,10 +18,25 @@ class Main(LoginRequiredMixin, View):
         "description":"",
         "keywords":"",
     }
-    
-    for model_name, model in app.models.items():
-        ctx[model_name + "_list"] = model.objects.all()
 
     def get(self, request):
+        for model_name, model in app.models.items():
+            self.ctx[model_name + "_list"] = model.objects.all()
         return render(request=request, template_name="display/main.html", context=self.ctx)
+    
+
+class EventCreate(LoginRequiredMixin, CreateView):
+    model = Event
+    fields = '__all__'
+    success_url = reverse_lazy('display:main')
+
+class EventUpdate(LoginRequiredMixin, UpdateView):
+    model = Event
+    fields = '__all__'
+    success_url = reverse_lazy('display:main')
+
+class EventDelete(LoginRequiredMixin, DeleteView):
+    model = Event
+    fields = '__all__'
+    success_url = reverse_lazy('display:main')
 

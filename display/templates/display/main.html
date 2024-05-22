@@ -15,10 +15,15 @@
     <a href="{% url 'home:home' %}">Back home</a>
 
     <h3>Events</h3>
+    <a href="{% url 'display:event_create' %}">Add an event</a>
     {% if event_list %}
         <ul>
             {% for event in event_list %}
-                <li>{{ event }}</li>
+                <li>
+                    {{ event }}
+                    (<a href="{% url 'display:event_update' event.id %}">Update</a> |
+                    <a href="{% url 'display:event_delete' event.id %}">Delete</a>)
+                </li>
             {% endfor %}
         </ul>
     {% else %}

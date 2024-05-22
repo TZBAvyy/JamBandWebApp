@@ -4,8 +4,6 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views import View
 
-from home.models import *
-
 # Create your views here.
 
 class Home(LoginRequiredMixin, TemplateView):
