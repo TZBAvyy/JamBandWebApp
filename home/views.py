@@ -8,7 +8,7 @@ from display.models import Event, Practice
 
 # Create your views here.
 
-class Home(LoginRequiredMixin, TemplateView):
+class Home(TemplateView):
     def get(self, request):
         ctx = {
             "description":"",
