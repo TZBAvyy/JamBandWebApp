@@ -53,6 +53,9 @@ class Event(models.Model):
     
     time = models.TimeField()
 
+    class Meta:
+        ordering = ['date','time']
+
     # Shows up in the admin list
     def __str__(self):
         """String for representing the Events object."""
@@ -87,6 +90,9 @@ class Practice(models.Model):
     startTime = models.TimeField()
 
     endTime = models.TimeField()
+    
+    class Meta:
+        ordering = ['date','startTime']
 
     def __str__(self):
         """String for representing the Practices object."""
