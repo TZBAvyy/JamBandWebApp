@@ -74,3 +74,14 @@ class PracticeDelete(LoginRequiredMixin, DeleteView):
     fields = '__all__'
     success_url = reverse_lazy('display:main')
 
+#Band Model Views & Forms
+class BandCreate(LoginRequiredMixin, CreateView):
+    model = Band
+    field = "__all__"
+    success_url = reverse_lazy('display:main')
+
+#Band Model Views & Forms
+class BandMemberCreate(LoginRequiredMixin, CreateView):
+    model = BandMember
+    field = "__all__"
+    success_url = reverse_lazy('display:main')

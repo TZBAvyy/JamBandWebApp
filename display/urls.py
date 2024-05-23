@@ -13,4 +13,8 @@ urlpatterns = [
     path('practice/create', views.PracticeCreate.as_view(), name="practice_create"),
     path('practice/<int:pk>/update', views.PracticeUpdate.as_view(), name="practice_update"),
     path('practice/<int:pk>/delete', views.PracticeDelete.as_view(), name="practice_delete"),
+
+    path('band/create', views.BandCreate.as_view(), name="band_create"),
+
+    path('band/member/create', views.BandCreate.as_view(), name="band_create"),
 ]
