@@ -20,8 +20,10 @@ class Main(LoginRequiredMixin, View):
     }
 
     def get(self, request):
-        for model_name, model in app.models.items():
-            self.ctx[model_name + "_list"] = model.objects.all()
+        self.ctx["practice_list"] = Practice.objects.all().order_by('date')
+        self.ctx["event_list"] = Event.objects.all().order_by('date')
+        self.ctx["band_list"] = Band.objects.all()
+        self.ctx["bandmember_list"] = BandMember.objects.all()
         return render(request=request, template_name="display/main.html", context=self.ctx)
     
 class MemberView(LoginRequiredMixin, View):
@@ -32,7 +34,7 @@ class MemberView(LoginRequiredMixin, View):
 
     def get(self, request):
         self.ctx["section_list"] = Section.objects.all()
-        self.ctx["membersection_list"] = MemberSection.objects.all()
+        self.ctx["membersection_list"] = MemberSection.objects.all().order_by('-proficiency')
         return render(request=request, template_name="display/members.html", context=self.ctx)
 
 #Event Model Views & Forms
