@@ -15,5 +15,7 @@ urlpatterns = [
     path('practice/<int:pk>/delete', views.PracticeDelete.as_view(), name="practice_delete"),
 
     path('event/<int:pk>/band/create', views.BandCreate.as_view(), name="band_create"),
+    path('band/<int:pk>/update', views.BandUpdate.as_view(), name="band_update"),
+    path('band/<int:pk>/delete', views.BandDelete.as_view(), name="band_delete"),
 
 ]
