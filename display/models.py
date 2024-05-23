@@ -26,11 +26,8 @@ class Member(models.Model):
     
 class MemberSection(models.Model):
     class Proficiency(models.IntegerChoices):
-        BEGINNER = 1
-        NOVICE = 2
-        ADEPT = 3
-        SKILLED = 4
-        EXPERT = 5
+        LEARNING = 1
+        CAN_PLAY = 2
     
     proficiency = models.IntegerField(choices=Proficiency)
 
@@ -40,7 +37,11 @@ class MemberSection(models.Model):
 
     def __str__(self):
         """String for representing the MemberSections object."""
-        return f"{self.member} (Level {self.proficiency} {self.section})"
+        if self.proficiency==1:
+            s = " (L)"
+        else:
+            s = ""
+        return f"{self.member} ({self.section}{s})"
 
 
 class Event(models.Model):
@@ -72,9 +73,7 @@ class Band(models.Model):
 class BandMember(models.Model):
     band = models.ForeignKey('Band', models.CASCADE, null=False)
 
-    section = models.ForeignKey('Section', models.CASCADE, null=False)
-
-    member = models.ForeignKey('Member', models.CASCADE, null=False)
+    member_section = models.ForeignKey('MemberSection', models.CASCADE, null=False)
 
     def __str__(self):
         """String for representing the BandMembers object."""

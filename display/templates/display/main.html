@@ -51,12 +51,12 @@
                                 <a>{{ band.name }}</a> 
                                 [<a href="{% url 'display:band_update' band.id %}">Change Name</a> |
                                 <a href="{% url 'display:band_delete' band.id %}">Delete</a>]
-                                <br/>Members:
+                                <br/>Members: [<a href="">Add Members</a>]
                                 <ul>
                                     {% for bandmember in bandmember_list %}
                                         {% if bandmember.band.id == band.id %}
                                             <li>
-                                                {{ bandmember.member }} [{{ bandmember.section }}]
+                                                {{ }}
                                             </li>
                                         {% endif %}
                                     {% endfor %}
