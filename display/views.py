@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views import View
@@ -77,11 +78,9 @@ class PracticeDelete(LoginRequiredMixin, DeleteView):
 #Band Model Views & Forms
 class BandCreate(LoginRequiredMixin, CreateView):
     model = Band
-    field = "__all__"
+    fields = ['name']
     success_url = reverse_lazy('display:main')
 
-#Band Model Views & Forms
-class BandMemberCreate(LoginRequiredMixin, CreateView):
-    model = BandMember
-    field = "__all__"
-    success_url = reverse_lazy('display:main')
+    def form_valid(self, form: forms.BaseModelForm) -> HttpResponse:
+        form.instance.event = get_object_or_404(Event, pk=self.kwargs['pk'])
+        return super().form_valid(form)

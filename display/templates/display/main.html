@@ -3,7 +3,7 @@
 {% block canonical_url %}{% endblock %}
 
 {% block navbar %} 
-    {% extends "nav.html" %}
+    {% include "nav.html" %}
 {% endblock %}
 
 {% block welcome %} 
@@ -23,7 +23,26 @@
                     <b>{{ event }}</b> at {{ event.date }} {{ event.time }}
                     (<a href="{% url 'display:event_update' event.id %}">Update</a> |
                     <a href="{% url 'display:event_delete' event.id %}">Delete</a>) <br/>
-                    <a href="{% url 'display:band_create'%}">Form Band</a>
+                    Bands: [<a href="{% url 'display:band_create' event.id %}">Form Band</a>]
+                    <ul>
+                    {% for band in band_list %}
+                        {% if band.event.id == event.id %}
+                            <li>
+                                <a>{{ band.name }}</a>
+                                <br/>Members:
+                                <ul>
+                                    {% for bandmember in bandmember_list %}
+                                        {% if bandmember.band.id == band.id %}
+                                            <li>
+                                                {{ bandmember.member }} [{{ bandmember.section }}]
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
                 </li>
             {% endfor %}
         </ul>
