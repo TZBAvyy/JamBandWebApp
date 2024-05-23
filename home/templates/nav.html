@@ -1,5 +1,13 @@
+
 {% block navbar %} 
-<nav>
-    
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+
+    <div class="navbar-brand">Universe</div>
+
+    <a class="nav-link" href="{% url 'home:home' %}">Home</a>
+
+    <a class="nav-link" href="{% url 'display:main' %}">Event/Practice Booking</a>
+
+    <a class="nav-link" href="{% url 'display:members' %}">Member List</a>
 </nav>
 {% endblock %}

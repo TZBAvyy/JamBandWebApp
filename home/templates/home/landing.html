@@ -3,7 +3,7 @@
 {% block canonical_url %}{% endblock %}
 
 {% block navbar %} 
-    <nav></nav>
+    {% include "nav.html" %}
 {% endblock %}
 
 {% block welcome %} 
@@ -11,10 +11,6 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-        <a href="{% url 'display:main' %}">Click here to create, update or delete models</a>
-    </div>
-
     <h3>Events</h3>
     {% if event_list %}
         <ul>
