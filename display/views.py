@@ -20,8 +20,8 @@ class Main(LoginRequiredMixin, View):
     }
 
     def get(self, request):
-        self.ctx["practice_list"] = Practice.objects.all().order_by('date')
-        self.ctx["event_list"] = Event.objects.all().order_by('date')
+        self.ctx["practice_list"] = Practice.objects.all().order_by('date','startTime')
+        self.ctx["event_list"] = Event.objects.all().order_by('date','time')
         self.ctx["band_list"] = Band.objects.all()
         self.ctx["bandmember_list"] = BandMember.objects.all()
         return render(request=request, template_name="display/main.html", context=self.ctx)
