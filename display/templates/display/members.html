@@ -1,0 +1,38 @@
+{% extends "base_bootstrap.html" %}
+
+{% block canonical_url %}{% endblock %}
+
+{% block navbar %} 
+    {% include "nav.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <a href="{% url 'display:main' %}">Back</a>
+
+    <div class="row">
+        <h3>Band Members</h3>
+        {% if membersection_list %}
+            {% for section in section_list%}
+                <div class="col-md-2">
+                <h4>{{ section }}</h4>
+                <ol>
+                    {% for member in membersection_list %}
+                    {% if member.section == section %}
+                        <li>
+                            {{ member.member }}
+                            {% if member.proficiency == 1 %}
+                            (L)
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                    {% endfor %}
+                </ol>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

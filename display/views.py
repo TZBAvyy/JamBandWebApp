@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -15,7 +15,7 @@ app = apps.get_app_config('display')
 
 class Main(LoginRequiredMixin, View):
     ctx = {
-        "description":"",
+        "description":"Test",
         "keywords":"",
     }
 
@@ -23,6 +23,17 @@ class Main(LoginRequiredMixin, View):
         for model_name, model in app.models.items():
             self.ctx[model_name + "_list"] = model.objects.all()
         return render(request=request, template_name="display/main.html", context=self.ctx)
+    
+class MemberView(LoginRequiredMixin, View):
+    ctx = {
+        "description":"",
+        "keywords":"",
+    }
+
+    def get(self, request):
+        self.ctx["section_list"] = Section.objects.all()
+        self.ctx["membersection_list"] = MemberSection.objects.all()
+        return render(request=request, template_name="display/members.html", context=self.ctx)
 
 #Event Model Views & Forms
 class EventForm(forms.ModelForm):
