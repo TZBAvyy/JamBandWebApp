@@ -43,23 +43,26 @@ class EventForm(forms.ModelForm):
         model = Event
         fields = '__all__'
         widgets = {
-            "date": forms.widgets.SelectDateWidget(),
+            "date": forms.DateInput(attrs={'type':'date'}),
             "time": forms.TimeInput(attrs={'type': 'time'})
         }  
 
 class EventCreate(LoginRequiredMixin, CreateView):
     model = Event
     form_class = EventForm
+    template_name = "display/form.html"
     success_url = reverse_lazy('display:main')
 
 class EventUpdate(LoginRequiredMixin, UpdateView):
     model = Event
     form_class = EventForm
+    template_name = "display/form.html"
     success_url = reverse_lazy('display:main')
 
 class EventDelete(LoginRequiredMixin, DeleteView):
     model = Event
     fields = '__all__'
+    template_name = "display/confirm_delete.html"
     success_url = reverse_lazy('display:main')
 
 #Practice Model Views & Forms
@@ -68,7 +71,7 @@ class PracticeForm(forms.ModelForm):
         model = Practice
         fields = '__all__'
         widgets = {
-            "date": forms.widgets.SelectDateWidget(),
+            "date": forms.DateInput(attrs={'type':'date'}),
             "startTime": forms.TimeInput(attrs={'type': 'time'}),
             "endTime": forms.TimeInput(attrs={'type': 'time'})
         }  
@@ -97,22 +100,26 @@ class PracticeForm(forms.ModelForm):
 class PracticeCreate(LoginRequiredMixin, CreateView):
     model = Practice
     form_class = PracticeForm
+    template_name = "display/form.html"
     success_url = reverse_lazy('display:main')
 
 class PracticeUpdate(LoginRequiredMixin, UpdateView):
     model = Practice
     form_class = PracticeForm
+    template_name = "display/form.html"
     success_url = reverse_lazy('display:main')
 
 class PracticeDelete(LoginRequiredMixin, DeleteView):
     model = Practice
     fields = '__all__'
+    template_name = "display/confirm_delete.html"
     success_url = reverse_lazy('display:main')
 
 #Band Model Views & Forms
 class BandCreate(LoginRequiredMixin, CreateView):
     model = Band
     fields = ['name']
+    template_name = "display/form.html"
     success_url = reverse_lazy('display:main')
 
     def form_valid(self, form: forms.BaseModelForm) -> HttpResponse:
@@ -122,17 +129,20 @@ class BandCreate(LoginRequiredMixin, CreateView):
 class BandUpdate(LoginRequiredMixin, UpdateView):
     model = Band
     fields = ['name']
+    template_name = "display/form.html"
     success_url = reverse_lazy('display:main')
 
 class BandDelete(LoginRequiredMixin, DeleteView):
     model = Band
     fields = ['name']
+    template_name = "display/confirm_delete.html"
     success_url = reverse_lazy('display:main')
 
 #Band Model Views & Forms
 class BandMemberCreate(LoginRequiredMixin, CreateView):
     model = BandMember
     fields = ['member_section']
+    template_name = "display/form.html"
     success_url = reverse_lazy('display:main')
 
     def form_valid(self, form: forms.BaseModelForm) -> HttpResponse:
@@ -142,9 +152,11 @@ class BandMemberCreate(LoginRequiredMixin, CreateView):
 class BandMemberUpdate(LoginRequiredMixin, UpdateView):
     model = BandMember
     fields = ['member_section']
+    template_name = "display/form.html"
     success_url = reverse_lazy('display:main')
 
 class BandMemberDelete(LoginRequiredMixin, DeleteView):
     model = BandMember
     fields = ['member_section']
+    template_name = "display/confirm_delete.html"
     success_url = reverse_lazy('display:main')
