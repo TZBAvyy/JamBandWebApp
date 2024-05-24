@@ -107,3 +107,23 @@ class BandDelete(LoginRequiredMixin, DeleteView):
     model = Band
     fields = ['name']
     success_url = reverse_lazy('display:main')
+
+#Band Model Views & Forms
+class BandMemberCreate(LoginRequiredMixin, CreateView):
+    model = BandMember
+    fields = ['member_section']
+    success_url = reverse_lazy('display:main')
+
+    def form_valid(self, form: forms.BaseModelForm) -> HttpResponse:
+        form.instance.band = get_object_or_404(Band, pk=self.kwargs['pk'])
+        return super().form_valid(form)
+    
+class BandMemberUpdate(LoginRequiredMixin, UpdateView):
+    model = BandMember
+    fields = ['member_section']
+    success_url = reverse_lazy('display:main')
+
+class BandMemberDelete(LoginRequiredMixin, DeleteView):
+    model = BandMember
+    fields = ['member_section']
+    success_url = reverse_lazy('display:main')

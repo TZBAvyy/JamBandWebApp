@@ -51,20 +51,22 @@
                                     <a>{{ band.name }}</a> 
                                     [<a href="{% url 'display:band_update' band.id %}">Change Name</a> |
                                     <a href="{% url 'display:band_delete' band.id %}">Delete</a>]
-                                    <br/>Members: [<a href="">Add Members</a>]
+                                    <br/>Members: [<a href="{% url 'display:bandmember_create' band.id %}">Add Members</a>]
                                     <ul>
                                         {% for bandmember in bandmember_list %}
                                             {% if bandmember.band.id == band.id %}
                                                 <li>
-                                                    {{ bandmember.member }}
+                                                    {{ bandmember.member_section }}
+                                                    [<a href="{% url 'display:bandmember_update' bandmember.id %}">Update</a> |
+                                                    <a href="{% url 'display:bandmember_delete' bandmember.id %}">Delete</a>]
                                                 </li>
                                             {% endif %}
                                         {% endfor %}
-                                    </ul>
+                                    </ul><br/>
                                 </li>
                             {% endif %}
                         {% endfor %}
-                        </ul>
+                        </ul><br/>
                     </li>
                 {% endfor %}
             </ul>

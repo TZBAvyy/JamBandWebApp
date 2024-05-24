@@ -80,7 +80,7 @@ class BandMember(models.Model):
 
     def __str__(self):
         """String for representing the BandMembers object."""
-        return f"{self.member} ({self.section}) IN {self.band}"
+        return f"{self.member_section} IN {self.band}"
     
 class Practice(models.Model):
     band = models.ForeignKey('Band', models.CASCADE, null=False)

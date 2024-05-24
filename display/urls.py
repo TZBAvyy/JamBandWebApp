@@ -19,4 +19,8 @@ urlpatterns = [
     path('band/<int:pk>/update', views.BandUpdate.as_view(), name="band_update"),
     path('band/<int:pk>/delete', views.BandDelete.as_view(), name="band_delete"),
 
+    path('band/<int:pk>/member/create', views.BandMemberCreate.as_view(), name="bandmember_create"),
+    path('member/<int:pk>/update', views.BandMemberUpdate.as_view(), name="bandmember_update"),
+    path('member/<int:pk>/delete', views.BandMemberDelete.as_view(), name="bandmember_delete"),
+
 ]
