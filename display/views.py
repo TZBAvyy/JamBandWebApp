@@ -5,6 +5,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views import View
 from django import forms
+from django.db.models import Q
 
 from display.models import *
 from django.apps import apps
@@ -72,6 +73,21 @@ class PracticeForm(forms.ModelForm):
             "startTime": forms.TimeInput(attrs={'type': 'time'}),
             "endTime": forms.TimeInput(attrs={'type': 'time'})
         }  
+    
+    def clean(self):
+        cleaned_data = super(PracticeForm, self).clean()
+        start = cleaned_data.get('startTime')
+        end = cleaned_data.get('endTime')
+        conflicts = Practice.objects.filter(
+                startTime__lt=end,
+                endTime__gt=start,
+            ).exclude(
+                id=self.instance.id
+            )
+        if any(conflicts):
+            lst = [f"{i.band} has practice from {i.startTime} to {i.endTime}" for i in conflicts]
+            raise forms.ValidationError(f"Conflict! {lst}")
+        return cleaned_data
 
 class PracticeCreate(LoginRequiredMixin, CreateView):
     model = Practice
