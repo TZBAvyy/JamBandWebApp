@@ -1,7 +1,9 @@
 <!-- Landing Page Template -->
 {% extends "base_bootstrap.html" %}
 
-{% block canonical_url %}{% endblock %}
+{% block canonical_url %}
+    {% url 'home:home' %}
+{% endblock %}
 
 {% block navbar %} 
     {% include "nav.html" %}
@@ -12,31 +14,43 @@
 {% endblock %}
 
 {% block content %}
-    <h3>Events</h3>
-    {% if event_list %}
+
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Upcoming Events</h3>
+        {% if event_list %}
+            <ul>
+                {% for event in event_list %}
+                    <li>
+                        <b>{{ event }}</b> at {{ event.date }} {{ event.time }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>There are no event in the library.</p>
+        {% endif %}
+    </div>
+
+    <div class="col-md-6">
+        <h3>Practices Scheduled</h3>
+        {% if practice_list %}
         <ul>
-            {% for event in event_list %}
-                <li>
-                    <b>{{ event }}</b> at {{ event.date }} {{ event.time }}
-                </li>
+            {% for practice in practice_list %}
+            <li>
+                <b>[{{ practice.date }}]</b> <i>{{ practice.band }}</i> is practicing from <b>{{ practice.startTime }} to {{ practice.endTime }}</b>
+            </li>
             {% endfor %}
         </ul>
-    {% else %}
-        <p>There are no event in the library.</p>
-    {% endif %}
+        {% else %}
+            <p>There are no practices scheduled.</p>
+        {% endif %}
+    </div>
+</div>
 
-    <h3>Practices</h3>
-    {% if practice_list %}
-    <ul>
-        {% for practice in practice_list %}
-        <li>
-            <b>{{ practice }}</b>
-        </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-        <p>There are no practices scheduled.</p>
-    {% endif %}
+<div class="row">
+    <h2>If you are interested in joining Universe aka Hall 1 Jamband, contact us!</h2>
+</div>
 
 {% endblock %}
 

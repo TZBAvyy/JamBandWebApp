@@ -1,7 +1,9 @@
 <!-- Main Template for Display App -->
 {% extends "base_bootstrap.html" %}
 
-{% block canonical_url %}{% endblock %}
+{% block canonical_url %}
+{% url 'display:main' %}
+{% endblock %}
 
 {% block navbar %} 
     {% include "nav.html" %}
@@ -11,70 +13,65 @@
     <h1>Welcome to the display page for H1 Jam Band</h1>
 {% endblock %}
 
-{% block content %}
+{% block content %} 
 
+<div class="row">
+    <h3>Practices</h3>
+    <a href="{% url 'display:practice_create' %}">Schedule a practice</a>
+    {% if practice_list %}
+    <ul>
+        {% for practice in practice_list %}
+        <li>
+            <b>[{{ practice.date }}]</b> <i>{{ practice.band }}</i> is practicing from <b>{{ practice.startTime }} to {{ practice.endTime }}</b>
+            (<a href="{% url 'display:practice_update' practice.id %}">Edit</a> |
+            <a href="{% url 'display:practice_delete' practice.id %}">Delete</a>)
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>There are no practices scheduled.</p>
+    {% endif %}
+</div>
 
-<div class="container-fluid">   
-
-    <div class="row">
-        <h3>Practices</h3>
-        <a href="{% url 'display:practice_create' %}">Schedule a practice</a>
-        {% if practice_list %}
-        <ul>
-            {% for practice in practice_list %}
-            <li>
-                <b>[{{ practice.date }}]</b> <i>{{ practice.band }}</i> is practicing from <b>{{ practice.startTime }} to {{ practice.endTime }}</b>
-                (<a href="{% url 'display:practice_update' practice.id %}">Edit</a> |
-                <a href="{% url 'display:practice_delete' practice.id %}">Delete</a>)
-            </li>
+<div class="row">
+    <h3>Events [<a href="{% url 'display:event_create' %}">+</a>]</h3>
+    {% if event_list %}
+        <ul class="row">
+            {% for event in event_list %}
+                <li class="col-md-6">
+                    <a href="{% url 'display:event_update' event.id %}">{{event}}</a> [{{ event.date }} {{ event.time }}]
+                    [<a href="{% url 'display:event_delete' event.id %}">Delete</a>] <br/>
+                    <h5>Bands: [<a href="{% url 'display:band_create' event.id %}">+</a>]</h5>
+                    <ul>
+                    {% for band in band_list %}
+                        {% if band.event.id == event.id %}
+                            <li>
+                                <a href="{% url 'display:band_update' band.id %}">{{ band.name }}</a> 
+                                [<a href="{% url 'display:band_delete' band.id %}">Delete</a>]<br/>
+                                <h6>Members: [<a href="{% url 'display:bandmember_create' band.id %}">+</a>]</h6>
+                                <ul>
+                                    {% for bandmember in bandmember_list %}
+                                        {% if bandmember.band.id == band.id %}
+                                            <li>
+                                                {{ bandmember.member_section }}
+                                                [<a href="{% url 'display:bandmember_update' bandmember.id %}">Update</a> |
+                                                <a href="{% url 'display:bandmember_delete' bandmember.id %}">Delete</a>]
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul><br/>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul><br/>
+                </li>
             {% endfor %}
         </ul>
-        {% else %}
-            <p>There are no practices scheduled.</p>
-        {% endif %}
-    </div>
-
-    <div class="row">
-        <h3>Events [<a href="{% url 'display:event_create' %}">+</a>]</h3>
-        {% if event_list %}
-            <ul class="row">
-                {% for event in event_list %}
-                    <li class="col-md-6">
-                        <a href="{% url 'display:event_update' event.id %}">{{event}}</a> [{{ event.date }} {{ event.time }}]
-                        [<a href="{% url 'display:event_delete' event.id %}">Delete</a>] <br/>
-                        <h5>Bands: [<a href="{% url 'display:band_create' event.id %}">+</a>]</h5>
-                        <ul>
-                        {% for band in band_list %}
-                            {% if band.event.id == event.id %}
-                                <li>
-                                    <a href="{% url 'display:band_update' band.id %}">{{ band.name }}</a> 
-                                    [<a href="{% url 'display:band_delete' band.id %}">Delete</a>]<br/>
-                                    <h6>Members: [<a href="{% url 'display:bandmember_create' band.id %}">+</a>]</h6>
-                                    <ul>
-                                        {% for bandmember in bandmember_list %}
-                                            {% if bandmember.band.id == band.id %}
-                                                <li>
-                                                    {{ bandmember.member_section }}
-                                                    [<a href="{% url 'display:bandmember_update' bandmember.id %}">Update</a> |
-                                                    <a href="{% url 'display:bandmember_delete' bandmember.id %}">Delete</a>]
-                                                </li>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </ul><br/>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-                        </ul><br/>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>There are no event in the library.</p>
-        {% endif %}
-    </div>
-
-
+    {% else %}
+        <p>There are no event in the library.</p>
+    {% endif %}
 </div>
+
 {% endblock %}
 
 {% block footer %} {% endblock %}

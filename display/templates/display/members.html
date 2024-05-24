@@ -1,6 +1,8 @@
 {% extends "base_bootstrap.html" %}
 
-{% block canonical_url %}{% endblock %}
+{% block canonical_url %}
+    {% url 'display:members' %}
+{% endblock %}
 
 {% block navbar %} 
     {% include "nav.html" %}
