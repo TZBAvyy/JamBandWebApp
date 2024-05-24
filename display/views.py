@@ -5,7 +5,6 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views import View
 from django import forms
-from django.db.models import Q
 
 from display.models import *
 from django.apps import apps
@@ -78,7 +77,13 @@ class PracticeForm(forms.ModelForm):
         cleaned_data = super(PracticeForm, self).clean()
         start = cleaned_data.get('startTime')
         end = cleaned_data.get('endTime')
+
+        if start > end:
+            raise forms.ValidationError(f"Start time cannot be later than end time! (No overnighters!)")
+        
+        date = cleaned_data.get('date')
         conflicts = Practice.objects.filter(
+                date=date,
                 startTime__lt=end,
                 endTime__gt=start,
             ).exclude(
