@@ -23,8 +23,8 @@
         <ul>
             {% for practice in practice_list %}
             <li>
-                <b>{{ practice }}</b>
-                (<a href="{% url 'display:practice_update' practice.id %}">Update</a> |
+                <b>[{{ practice.date }}]</b> <i>{{ practice.band }}</i> is practicing from <b>{{ practice.startTime }} to {{ practice.endTime }}</b>
+                (<a href="{% url 'display:practice_update' practice.id %}">Edit</a> |
                 <a href="{% url 'display:practice_delete' practice.id %}">Delete</a>)
             </li>
             {% endfor %}
@@ -35,24 +35,21 @@
     </div>
 
     <div class="row">
-        <h3>Events</h3>
-        <a href="{% url 'display:event_create' %}">Add an event</a>
+        <h3>Events [<a href="{% url 'display:event_create' %}">+</a>]</h3>
         {% if event_list %}
             <ul class="row">
                 {% for event in event_list %}
                     <li class="col-md-6">
-                        <b>{{ event }}</b> at {{ event.date }} {{ event.time }}
-                        (<a href="{% url 'display:event_update' event.id %}">Update</a> |
-                        <a href="{% url 'display:event_delete' event.id %}">Delete</a>) <br/>
-                        Bands: [<a href="{% url 'display:band_create' event.id %}">Form Band</a>]
+                        <a href="{% url 'display:event_update' event.id %}">{{event}}</a> [{{ event.date }} {{ event.time }}]
+                        [<a href="{% url 'display:event_delete' event.id %}">Delete</a>] <br/>
+                        <h5>Bands: [<a href="{% url 'display:band_create' event.id %}">+</a>]</h5>
                         <ul>
                         {% for band in band_list %}
                             {% if band.event.id == event.id %}
                                 <li>
-                                    <a>{{ band.name }}</a> 
-                                    [<a href="{% url 'display:band_update' band.id %}">Change Name</a> |
-                                    <a href="{% url 'display:band_delete' band.id %}">Delete</a>]
-                                    <br/>Members: [<a href="{% url 'display:bandmember_create' band.id %}">Add Members</a>]
+                                    <a href="{% url 'display:band_update' band.id %}">{{ band.name }}</a> 
+                                    [<a href="{% url 'display:band_delete' band.id %}">Delete</a>]<br/>
+                                    <h6>Members: [<a href="{% url 'display:bandmember_create' band.id %}">+</a>]</h6>
                                     <ul>
                                         {% for bandmember in bandmember_list %}
                                             {% if bandmember.band.id == band.id %}
