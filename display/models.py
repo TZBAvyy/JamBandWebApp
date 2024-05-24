@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinLengthValidator
 
+# ALL MODELS FOLLOW THIS ERD: https://drawsql.app/teams/solo-196/diagrams/jamband
 
 class Section(models.Model):
     instrument = models.CharField(

@@ -15,8 +15,8 @@ app = apps.get_app_config('display')
 
 class Main(LoginRequiredMixin, View):
     ctx = {
-        "description":"Test",
-        "keywords":"",
+        "description":"Universe also known as Hall 1 Jam Band's Webpage",
+        "keywords":"Universe, Hall 1, Jam Band, Hall 1 Jam Band, NTU, Nanyang Technological University",
     }
 
     def get(self, request):
@@ -73,23 +73,23 @@ class PracticeForm(forms.ModelForm):
             "endTime": forms.TimeInput(attrs={'type': 'time'})
         }  
     
-    def clean(self):
+    def clean(self): #Overrided clean method for additional validation
         cleaned_data = super(PracticeForm, self).clean()
         start = cleaned_data.get('startTime')
         end = cleaned_data.get('endTime')
 
-        if start > end:
+        if start > end: #start and end time validation
             raise forms.ValidationError(f"Start time cannot be later than end time! (No overnighters!)")
         
         date = cleaned_data.get('date')
         conflicts = Practice.objects.filter(
                 date=date,
-                startTime__lt=end,
-                endTime__gt=start,
+                startTime__lt=end, #filter for any practices with startTime < endTime of this practice
+                endTime__gt=start, #filter for any practices with endTime > startTime of this practice
             ).exclude(
                 id=self.instance.id
             )
-        if any(conflicts):
+        if any(conflicts): #conflict validation 
             lst = [f"{i.band} has practice from {i.startTime} to {i.endTime}" for i in conflicts]
             raise forms.ValidationError(f"Conflict! {lst}")
         return cleaned_data
