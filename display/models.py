@@ -97,5 +97,5 @@ class Practice(models.Model):
 
     def __str__(self):
         """String for representing the Practices object."""
-        return f"{self.band} ON {self.date} FROM {self.startTime} TO {self.endTime}"
+        return f"[{self.date}] {self.band} from {self.startTime} to {self.endTime}"
     
