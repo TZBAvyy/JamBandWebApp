@@ -5,6 +5,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views import View
 from django import forms
+from datetime import datetime
+from django.utils import timezone
 
 from display.models import *
 from django.apps import apps
@@ -85,6 +87,13 @@ class PracticeForm(forms.ModelForm):
             raise forms.ValidationError(f"Start time cannot be later than end time! (No overnighters!)")
         
         date = cleaned_data.get('date')
+
+        #Checks for if the current datetime > date + startTime to prevent booking of the room in the past
+        datestartTime = timezone.make_aware(datetime.combine(date,start))
+        now = timezone.localtime(timezone.now())
+        if now>datestartTime:
+            raise forms.ValidationError("Error, cannot book a practice in the past")
+
         conflicts = Practice.objects.filter(
                 date=date,
                 startTime__lt=end, #filter for any practices with startTime < endTime of this practice
@@ -93,8 +102,10 @@ class PracticeForm(forms.ModelForm):
                 id=self.instance.id
             )
         if any(conflicts): #conflict validation 
-            lst = [f"{i.band} has practice from {i.startTime} to {i.endTime}" for i in conflicts]
-            raise forms.ValidationError(f"Conflict! {lst}")
+            st = "Room is booked from "
+            for i in conflicts:
+                st += f"{i.startTime} to {i.endTime}, "
+            raise forms.ValidationError(f"Conflict! {st}")
         return cleaned_data
 
 class PracticeCreate(LoginRequiredMixin, CreateView):
