@@ -6,16 +6,13 @@ from django.urls import reverse_lazy
 from django.views import View
 from django import forms
 from datetime import datetime
-from django.utils import timezone
+from django.utils.timezone import localtime, make_aware, now
 
 from display.models import *
-from django.apps import apps
-
-app = apps.get_app_config('display')
 
 # Create your views here.
 
-class Main(LoginRequiredMixin, View):
+class Main(View):
     ctx = {
         "description":"Universe also known as Hall 1 Jam Band's Webpage",
         "keywords":"Universe, Hall 1, Jam Band, Hall 1 Jam Band, NTU, Nanyang Technological University",
@@ -89,9 +86,9 @@ class PracticeForm(forms.ModelForm):
         date = cleaned_data.get('date')
 
         #Checks for if the current datetime > date + startTime to prevent booking of the room in the past
-        datestartTime = timezone.make_aware(datetime.combine(date,start))
-        now = timezone.localtime(timezone.now())
-        if now>datestartTime:
+        datestartTime = make_aware(datetime.combine(date,start))
+        datetimeNow = localtime(now())
+        if datetimeNow>datestartTime:
             raise forms.ValidationError("Error, cannot book a practice in the past")
 
         conflicts = Practice.objects.filter(
