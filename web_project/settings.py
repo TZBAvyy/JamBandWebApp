@@ -31,6 +31,11 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    #Apps
+    'home.apps.HomeConfig',
+    'display.apps.DisplayConfig',
+
+    #Django defaults
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,10 +46,6 @@ INSTALLED_APPS = [
     #Extentions
     'crispy_forms',
     'crispy_bootstrap5',
-
-    #Apps
-    'home.apps.HomeConfig',
-    'display.apps.DisplayConfig',
 
 ]
 
@@ -110,6 +111,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGIN_REDIRECT_URL = 'home:home'
+LOGOUT_REDIRECT_URL = 'home:home'
 
 
 # Internationalization
