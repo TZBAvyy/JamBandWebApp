@@ -1,7 +1,30 @@
 <!-- Landing Page Template -->
 {% extends "base_bootstrap.html" %}
 
+{% block head %} 
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js" integrity="sha384-0CB6A5Ktedhcwwd+5zVXQcYCIMCdJZQ3l7xbJF1RNPVsRb6GHDlLdfNdMMQyLHvE" crossorigin="anonymous"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                themeSystem: 'bootstrap5',
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: {{ events_json|safe }}
+            });
+            calendar.render();
+        });
+
+    </script>
+{% endblock %}
+
 {% block canonical_url %}
+    universejamband.pythonanywhere.com
     {% url 'home:home' %}
 {% endblock %}
 
@@ -32,25 +55,17 @@
         {% endif %}
     </div>
 
-    <div class="col-md-6">
-        <h3>Practices Scheduled</h3>
-        {% if practice_list %}
-        <ul>
-            {% for practice in practice_list %}
-            <li>
-                <b>[{{ practice.date }}]</b> <i>{{ practice.band }}</i> is practicing from <b>{{ practice.startTime }} to {{ practice.endTime }}</b>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-            <p>There are no practices scheduled.</p>
-        {% endif %}
-    </div>
+</div>
+
+<div class="row">
+    <h3>Practices Scheduled</h3>
+    <div id="calendar"></div>
 </div>
 
 <div class="row">
     <h2>If you are interested in joining Universe aka Hall 1 Jamband, contact us!</h2>
 </div>
+
 
 {% endblock %}
 
