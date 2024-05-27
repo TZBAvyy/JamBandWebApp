@@ -30,10 +30,7 @@
     </script>
 {% endblock %}
 
-{% block canonical_url %}
-    universejamband.pythonanywhere.com
-    {% url 'display:main' %}
-{% endblock %}
+{% block canonical_url %}{% url 'display:main' %}{% endblock %}
 
 {% block navbar %} 
     {% include "nav.html" %}

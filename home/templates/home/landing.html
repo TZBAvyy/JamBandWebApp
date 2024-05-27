@@ -27,10 +27,7 @@
 {% endblock %}
 
 
-{% block canonical_url %}
-    universejamband.pythonanywhere.com
-    {% url 'home:home' %}
-{% endblock %}
+{% block canonical_url %}{% url 'home:home' %}{% endblock %}
 
 
 {% block navbar %} 
