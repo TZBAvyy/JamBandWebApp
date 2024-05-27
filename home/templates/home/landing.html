@@ -9,11 +9,15 @@
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 themeSystem: 'bootstrap5',
-                initialView: 'dayGridMonth',
+                initialView: 'timeGridWeek',
                 headerToolbar: {
-                    left: 'prev,next today',
+                    left: 'prev,next',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    right: 'dayGridMonth,timeGridWeek'
+                },
+                buttonText: {
+                    dayGridMonth: "Month",
+                    timeGridWeek: "Week"
                 },
                 events: {{ events_json|safe }}
             });
@@ -33,15 +37,20 @@
 {% endblock %}
 
 {% block welcome %} 
-    <h1>Hello! Welcome to the temporary welcome page for Hall 1 JamBand!</h1>
+    <h1>Welcome to Universe!</h1>
 {% endblock %}
 
 {% block content %}
 
 
 <div class="row">
-    <div class="col-md-6">
-        <h3>Upcoming Events</h3>
+    <div class="col-lg-8">
+        <h3>Schedule for Upcoming Events & Practices</h3>
+        <div id="calendar"></div>
+    </div>
+
+    <div class="col-lg">
+        <h3 class="mt-5 pt-5">Upcoming Events</h3>
         {% if event_list %}
             <ul>
                 {% for event in event_list %}
@@ -51,16 +60,11 @@
                 {% endfor %}
             </ul>
         {% else %}
-            <p>There are no event in the library.</p>
+            <p>There are no events upcoming for Universe! Stay Tuned!</p>
         {% endif %}
     </div>
-
 </div>
 
-<div class="row">
-    <h3>Practices Scheduled</h3>
-    <div id="calendar"></div>
-</div>
 
 <div class="row">
     <h2>If you are interested in joining Universe aka Hall 1 Jamband, contact us!</h2>
