@@ -1,6 +1,35 @@
 <!-- Main Template for Display App -->
 {% extends "base_bootstrap.html" %}
 
+{% block head %} 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                eventClick: function(info) {
+                    var eventObj = info.event;
+                    window.open(eventObj.url,_self);
+                },
+                themeSystem: 'bootstrap5',
+                initialView: 'timeGridWeek',
+                scrollTime: '12:00:00',
+                headerToolbar: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek'
+                },
+                buttonText: {
+                    dayGridMonth: "Month",
+                    timeGridWeek: "Week"
+                },
+                events: {{ practices_json|safe }}
+            });
+            
+            calendar.render();
+        });
+    </script>
+{% endblock %}
+
 {% block canonical_url %}
     universejamband.pythonanywhere.com
     {% url 'display:main' %}
@@ -11,30 +40,38 @@
 {% endblock %}
 
 {% block welcome %} 
-    <h1>Welcome to the display page for H1 Jam Band</h1>
+    <h1>Schedule, Edit or Delete a Practice Session</h1>
 {% endblock %}
 
 {% block content %} 
 
 <div class="row">
-    <h3>Practices</h3>
-    <a href="{% url 'display:practice_create' %}">Schedule a practice</a>
-    {% if practice_list %}
-    <ul>
-        {% for practice in practice_list %}
-        <li>
-            <b>[{{ practice.date }}]</b> <i>{{ practice.band }}</i> is practicing from <b>{{ practice.startTime }} to {{ practice.endTime }}</b>
-            (<a href="{% url 'display:practice_update' practice.id %}">Edit</a> |
-            <a href="{% url 'display:practice_delete' practice.id %}">Delete</a>)
-        </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-        <p>There are no practices scheduled.</p>
-    {% endif %}
+    <div class="col-lg-8">
+        <h3>Schedule for Practices</h3>
+        <div id="calendar"></div>
+    </div>
+    <div class="col-lg">
+        <h3 class="mt-5 pt-5">Practices</h3>
+        <a href="{% url 'display:practice_create' %}" class="btn btn-primary" role="button">Schedule a practice</a>
+        {% if practice_list %}
+        <ul>
+            {% for practice in practice_list %}
+            <li class="py-2">
+                <b>[{{ practice.date }}]</b><br/>
+                <b>[{{ practice.startTime }} to {{ practice.endTime }}]</b><br/>
+                <b>{{ practice.band }}</b> is practicing<br/>
+                <a href="{% url 'display:practice_update' practice.id %}" class="btn btn-primary" role="button">Edit</a>
+                <a href="{% url 'display:practice_delete' practice.id %}" class="btn btn-primary" role="button">Delete</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>There are no practices scheduled.</p>
+        {% endif %}
+    </div>
 </div>
 
-<div class="row">
+{% comment %} <div class="row">
     <h3>Events [<a href="{% url 'display:event_create' %}">+</a>]</h3>
     {% if event_list %}
         <ul class="row">
@@ -71,7 +108,7 @@
     {% else %}
         <p>There are no event in the library.</p>
     {% endif %}
-</div>
+</div> {% endcomment %}
 
 {% endblock %}
 

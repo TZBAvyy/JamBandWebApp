@@ -2,11 +2,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import View
 from django import forms
 from datetime import datetime
 from django.utils.timezone import localtime, make_aware, now
+import json
 
 from display.models import *
 
@@ -19,10 +20,23 @@ class Main(View):
     }
 
     def get(self, request):
-        self.ctx["practice_list"] = Practice.objects.all()
+        practices = Practice.objects.all()
+        self.ctx["practice_list"] = practices
         self.ctx["event_list"] = Event.objects.all()
         self.ctx["band_list"] = Band.objects.all()
         self.ctx["bandmember_list"] = BandMember.objects.all()
+        if practices:
+            practices_json = []
+            for practice in practices:
+                practices_json.append({
+                    'title':practice.band.name,
+                    'url': reverse('display:practice_update',args=[practice.id]),
+                    'start':practice.date.strftime("%Y-%m-%dT")+practice.startTime.strftime("%H:%M"),
+                    'end':practice.date.strftime("%Y-%m-%dT")+practice.endTime.strftime("%H:%M")
+                })
+            self.ctx["practices_json"] = json.dumps(practices_json)
+        else:
+            self.ctx["practices_json"] = json.dumps({})
         return render(request=request, template_name="display/main.html", context=self.ctx)
     
 class MemberView(LoginRequiredMixin, View):

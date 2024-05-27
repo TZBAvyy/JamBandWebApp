@@ -2,14 +2,13 @@
 {% extends "base_bootstrap.html" %}
 
 {% block head %} 
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js" integrity="sha384-0CB6A5Ktedhcwwd+5zVXQcYCIMCdJZQ3l7xbJF1RNPVsRb6GHDlLdfNdMMQyLHvE" crossorigin="anonymous"></script>
     <script>
-
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 themeSystem: 'bootstrap5',
                 initialView: 'timeGridWeek',
+                scrollTime: '12:00:00',
                 headerToolbar: {
                     left: 'prev,next',
                     center: 'title',
@@ -21,24 +20,28 @@
                 },
                 events: {{ events_json|safe }}
             });
+
             calendar.render();
         });
-
     </script>
 {% endblock %}
+
 
 {% block canonical_url %}
     universejamband.pythonanywhere.com
     {% url 'home:home' %}
 {% endblock %}
 
+
 {% block navbar %} 
     {% include "nav.html" %}
 {% endblock %}
 
+
 {% block welcome %} 
     <h1>Welcome to Universe!</h1>
 {% endblock %}
+
 
 {% block content %}
 
@@ -65,12 +68,11 @@
     </div>
 </div>
 
-
-<div class="row">
-    <h2>If you are interested in joining Universe aka Hall 1 Jamband, contact us!</h2>
-</div>
-
-
 {% endblock %}
 
-{% block footer %} {% endblock %}
+
+{% block footer %} 
+<div class="container mt-3">
+    <h2>If you are interested in joining Universe aka Hall 1 Jamband, contact us!</h2>
+</div>
+{% endblock %}

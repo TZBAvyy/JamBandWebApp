@@ -32,6 +32,8 @@ class Home(TemplateView):
                     'end':practice.date.strftime("%Y-%m-%dT")+practice.endTime.strftime("%H:%M")
                 })
             ctx["events_json"] = json.dumps(events_json)
+        else:
+            ctx["events_json"] = json.dumps({})
         return render(request=request, template_name='home/landing.html', context=ctx)
     
 
