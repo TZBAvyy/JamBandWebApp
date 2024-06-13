@@ -20,6 +20,8 @@ class Member(models.Model):
             help_text='Enter a member\'s full name (e.g. Avi)',
             validators=[MinLengthValidator(2, "Member name must be greater than 1 character")]
     )
+    bands = models.ManyToManyField('Band',through='BandMember')
+    sections = models.ManyToManyField('Section',through='MemberSection')
 
     def __str__(self):
         """String for representing the Members object."""
@@ -33,7 +35,6 @@ class MemberSection(models.Model):
     proficiency = models.IntegerField(choices=Proficiency)
 
     section = models.ForeignKey('Section', on_delete=models.CASCADE, null=False)
-
     member = models.ForeignKey('Member', on_delete=models.CASCADE, null=False)
 
     def __str__(self):
@@ -68,6 +69,7 @@ class Band(models.Model):
             validators=[MinLengthValidator(2, "Event name must be greater than 1 character")]
     )
     event = models.ForeignKey('Event', models.CASCADE, null=False)
+    members = models.ManyToManyField('Member', through='BandMember')
 
     # Shows up in the admin list
     def __str__(self):
@@ -76,12 +78,11 @@ class Band(models.Model):
     
 class BandMember(models.Model):
     band = models.ForeignKey('Band', models.CASCADE, null=False)
-
-    member_section = models.ForeignKey('MemberSection', models.CASCADE, null=False)
+    member = models.ForeignKey('Member', models.CASCADE, null=False)
 
     def __str__(self):
         """String for representing the BandMembers object."""
-        return f"{self.member_section} IN {self.band}"
+        return f"{self.member} IN {self.band}"
     
 class Practice(models.Model):
     band = models.ForeignKey('Band', models.CASCADE, null=False)
