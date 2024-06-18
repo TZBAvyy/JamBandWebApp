@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
 
 # ALL MODELS FOLLOW THIS ERD: https://drawsql.app/teams/solo-196/diagrams/jamband
@@ -44,7 +45,6 @@ class MemberSection(models.Model):
         else:
             s = ""
         return f"{self.member} ({self.section}{s})"
-
 
 class Event(models.Model):
     name = models.CharField(

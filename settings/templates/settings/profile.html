@@ -1,0 +1,60 @@
+{% extends "base_bootstrap.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block canonical_url %}{% url 'settings:profile' user.id %}{% endblock %}
+
+
+{% block navbar %} 
+    {% include "nav.html" %}
+{% endblock %}
+
+
+{% block welcome %} 
+<h1>{{ full_name }}</h1>
+{% if matric %}
+    <h5>Matric Number: {{ matric }}</h5>
+{% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+<form action="" method="post">
+
+    {% load crispy_forms_tags %}
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <h6>Sections:</h6>
+    {% if sections %}
+        <ul>
+            {% for section in sections %}
+                <li>{{ section }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You are using the default member/cochair account!</p>
+    {% endif %}
+
+    <h6>Band:</h6>
+    {% if bands %}
+        <ul>
+            {% for band in bands %}
+                <li>{{ band }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You are not in any bands currently!</p>
+    {% endif %}
+
+    <input type="submit" value="Update">
+    <input type="submit" onclick="window.location='{% url 'home:home' %}' ; return false;" value="Cancel">
+</form>
+
+{% endblock %}
+
+
+{% block footer %} 
+{% endblock %}
