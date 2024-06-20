@@ -7,5 +7,8 @@ def run():
     current_date = dt.now().date()
     dates_to_delete = Practice.objects.filter(date__lt=current_date)
     sleep(1)
-    dates_to_delete.delete()
-    print("Deleted!")
+    if dates_to_delete:
+        dates_to_delete.delete()
+        print("Deleted!")
+    else:
+        print("Nothing to delete! Time to sleep!")
