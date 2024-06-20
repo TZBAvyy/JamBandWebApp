@@ -16,12 +16,12 @@ def run():
         User.objects.all().delete()
 
         #Create default user and superuser (REMEMBER TO UPDATE .env FILE)
-        user = User.objects.create_user(username="jambandmember",password=config("DEFAULTUSERPASS"))
+        user = User.objects.create_user(username=config("DEFAULTUSERNAME"),password=config("DEFAULTUSERPASS"))
         user.first_name = "Member Account"
         user.save()
         UserProfile.objects.get_or_create(user=user)
 
-        user = User.objects.create_superuser(username="hallonejamband",password=config("SUPERUSERPASS"),email='hallonejamband@gmail.com')
+        user = User.objects.create_superuser(username=config("SUPERUSERNAME"),password=config("SUPERUSERPASS"),email='hallonejamband@gmail.com')
         user.first_name = "CoChair Account"
         user.save()
         UserProfile.objects.get_or_create(user=user)
