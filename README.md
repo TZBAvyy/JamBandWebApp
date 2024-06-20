@@ -18,5 +18,17 @@ Django + MySQL for Backend
 
 Docker for DevOps stuff but I am still learning on how to apply it
 
+Required .env variables
+SECRET_KEY = '' (for django)
+DEBUG = bool
+DB_NAME= '' (MySQL)
+DB_USER= ''
+DB_PASSWORD= ''
+DB_HOST= ''
+DEFAULTUSERNAME= '' (for django auth)
+DEFAULTUSERPASS= '' 
+SUPERUSERNAME= ''
+SUPERUSERPASS= '' 
+
 Currently hosted on pythonanywhere at
 http://universejamband.pythonanywhere.com/
