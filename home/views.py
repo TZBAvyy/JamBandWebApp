@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 import json
+from datetime import datetime as dt
 
 from display.models import Event, Practice
 
@@ -9,7 +10,10 @@ from display.models import Event, Practice
 #Landing Page View (URL: '')
 class Home(TemplateView):
     def get(self, request):
-        events = Event.objects.all()
+        events = []
+        for event in Event.objects.all():
+            if dt.combine(event.date,event.time)>dt.now():
+                events.append(event)
         practices = Practice.objects.all()
         ctx = {
             "description":"Universe also known as Hall 1 Jam Band's Webpage",
