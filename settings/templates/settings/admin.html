@@ -36,6 +36,7 @@
                 {% if member.bands.all %}
                     {% for band in member.bands.all %}
                         {{ band.event }} ({{ band.event.date|date:"Y" }}){% if forloop.last %}{% else %},{% endif %}
+                        {% if forloop.last %} <b>[{{ forloop.counter }}]</b>{% endif %}
                     {% endfor %}
                 {% else %}
                     -
