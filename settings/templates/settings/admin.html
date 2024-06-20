@@ -35,7 +35,7 @@
             <td>
                 {% if member.bands.all %}
                     {% for band in member.bands.all %}
-                        {{ band.event }}{% if forloop.last %}{% else %},{% endif %}
+                        {{ band.event }} ({{ band.event.date|date:"Y" }}){% if forloop.last %}{% else %},{% endif %}
                     {% endfor %}
                 {% else %}
                     -
