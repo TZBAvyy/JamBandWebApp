@@ -27,30 +27,35 @@
     {% csrf_token %}
     {{ form|crispy }}
 
-    <h6>Sections:</h6>
-    {% if sections %}
-        <ul>
-            {% for section in sections %}
-                <li>{{ section }}</li>
-            {% endfor %}
-        </ul>
+    {% if user.is_superuser %}
+            <input type="submit" onclick="window.location='{% url 'settings:admin' %}' ; return false;" value="Admin List" class="btn text-primary">
     {% else %}
-        <p>You are using the default member/cochair account!</p>
+        <h6>Sections:</h6>
+        {% if sections %}
+            <ul>
+                {% for section in sections %}
+                    <li>{{ section }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You are using the default member account!</p>
+        {% endif %}
+
+        <h6>Band:</h6>
+        {% if bands %}
+            <ul>
+                {% for band in bands %}
+                    <li>{{ band }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You are not in any bands currently!</p>
+        {% endif %}
     {% endif %}
 
-    <h6>Band:</h6>
-    {% if bands %}
-        <ul>
-            {% for band in bands %}
-                <li>{{ band }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>You are not in any bands currently!</p>
-    {% endif %}
 
-    <input type="submit" value="Update">
-    <input type="submit" onclick="window.location='{% url 'home:home' %}' ; return false;" value="Cancel">
+    <input type="submit" value="Update" class="btn text-primary">
+    <input type="submit" onclick="window.location='{% url 'home:home' %}' ; return false;" value="Cancel" class="btn text-primary">
 </form>
 
 {% endblock %}

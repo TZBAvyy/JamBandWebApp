@@ -1,9 +1,10 @@
 from typing import Any
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import UpdateView
+from django.views.generic.list import ListView
 from django.urls import reverse_lazy
 
-from display.models import Member
+from display.models import Member, MemberSection
 from django.contrib.auth.models import User
 from settings.models import UserProfile
 
@@ -26,5 +27,17 @@ class ProfileView(LoginRequiredMixin, UpdateView):
             context["sections"] = ""
             context["bands"] = ""
             context["matric"] = ""
+        return context
+    
+class AdminView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Member
+    template_name = "settings/admin.html"
+
+    def test_func(self) -> bool | None:
+        return self.request.user.is_superuser
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["membersection_list"] = MemberSection.objects.all()
         return context
     

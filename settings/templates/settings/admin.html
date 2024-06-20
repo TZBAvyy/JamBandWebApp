@@ -1,0 +1,52 @@
+{% extends "base_bootstrap.html" %}
+
+{% block head %} {% endblock %}
+
+{% block navbar %} 
+    {% include "nav.html" %}
+{% endblock %}
+
+{% block welcome %} {% endblock %}
+
+{% block content %}
+
+{% if object_list %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Member</th>
+            <th scope="col">Sections</th>
+            <th scope="col">Events Played In</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for member in object_list %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ member.name }}</td>
+            <td>
+                {% for membersection in membersection_list %}
+                    {% if membersection.member == member %}
+                        |{{ membersection.section }}{% if membersection.proficiency == 1 %} (L){% endif %}|
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% if member.bands.all %}
+                    {% for band in member.bands.all %}
+                        {{ band.event }}{% if forloop.last %}{% else %},{% endif %}
+                    {% endfor %}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+{% endif %}
+
+{% endblock %}
+
+{% block footer %} {% endblock %}
