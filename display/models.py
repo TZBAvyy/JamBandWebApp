@@ -21,8 +21,7 @@ class Member(models.Model):
             help_text='Enter a member\'s full name (e.g. Avi)',
             validators=[MinLengthValidator(2, "Member name must be greater than 1 character")]
     )
-    bands = models.ManyToManyField('Band',through='BandMember')
-    sections = models.ManyToManyField('Section',through='MemberSection')
+    sections = models.ManyToManyField('Section',through='MemberSection', related_name='players')
 
     def __str__(self):
         """String for representing the Members object."""
@@ -69,7 +68,7 @@ class Band(models.Model):
             validators=[MinLengthValidator(2, "Event name must be greater than 1 character")]
     )
     event = models.ForeignKey('Event', models.CASCADE, null=False)
-    members = models.ManyToManyField('Member', through='BandMember')
+    members = models.ManyToManyField('Member', through='BandMember', related_name='bands')
 
     # Shows up in the admin list
     def __str__(self):
