@@ -1,8 +1,8 @@
 from typing import Any
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.exceptions import PermissionDenied
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
-from django.urls import reverse_lazy
 
 from display.models import Member, MemberSection
 from django.contrib.auth.models import User
@@ -12,11 +12,13 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     template_name = "settings/profile.html"
     fields = ['email']
-    success_url = reverse_lazy('home:home')
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["full_name"] = context["object"].get_full_name()
+
+        if not self.request.user == context["object"]:
+            raise PermissionDenied()
 
         member = UserProfile.objects.get(user=context["object"]).member
         if member:
@@ -28,6 +30,8 @@ class ProfileView(LoginRequiredMixin, UpdateView):
             context["bands"] = ""
             context["matric"] = ""
         return context
+    
+    
     
 class AdminView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Member
