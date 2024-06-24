@@ -1,4 +1,5 @@
 from typing import Any
+from datetime import datetime as dt
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
@@ -11,6 +12,11 @@ class SuperView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
     def test_func(self) -> bool | None:
         return self.request.user.is_superuser
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["dateNow"] = dt.now().date()
+        return context
 
 class BandDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = Band

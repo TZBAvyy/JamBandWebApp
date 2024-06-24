@@ -12,11 +12,11 @@
 
 <a class="btn btn-primary" href="{% url 'settings:admin' %}">Members' Event Contribution Page</a>
 
-<a class="btn btn-success" href="{% url 'display:bandmember_create' object.id %}">Add Band Member</a>
-
 <a class="btn btn-danger" href="{% url 'display:band_delete' object.id %}">Delete Band</a>
 
 <h2>{{ object }}</h2>
+<a class="btn btn-success" href="{% url 'display:bandmember_create' object.id %}">Add Band Member</a>
+
 {% if object %}
     <table class="table">
         <thead>
