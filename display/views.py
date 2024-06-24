@@ -1,9 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.base import Model as Model
+from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.views import View
+from typing import Any
 import json
 
 from display.models import *
@@ -52,19 +55,19 @@ class EventCreate(LoginRequiredMixin, CreateView):
     model = Event
     form_class = EventForm
     template_name = "display/form.html"
-    success_url = reverse_lazy('display:main')
+    success_url = reverse_lazy('super:home')
 
 class EventUpdate(LoginRequiredMixin, UpdateView):
     model = Event
     form_class = EventForm
     template_name = "display/form.html"
-    success_url = reverse_lazy('display:main')
+    success_url = reverse_lazy('super:home')
 
 class EventDelete(LoginRequiredMixin, DeleteView):
     model = Event
     fields = '__all__'
     template_name = "display/confirm_delete.html"
-    success_url = reverse_lazy('display:main')
+    success_url = reverse_lazy('super:home')
 
 #Practice Model Views
 class PracticeCreate(LoginRequiredMixin, CreateView):
@@ -85,48 +88,49 @@ class PracticeDelete(LoginRequiredMixin, DeleteView):
     template_name = "display/confirm_delete.html"
     success_url = reverse_lazy('display:main')
 
-# #Band Model Views & Forms
-# class BandCreate(LoginRequiredMixin, CreateView):
-#     model = Band
-#     fields = ['name']
-#     template_name = "display/form.html"
-#     success_url = reverse_lazy('display:main')
+#Band Model Views & Forms
+class BandCreate(LoginRequiredMixin, CreateView):
+    model = Band
+    form_class = BandForm
+    template_name = "display/form.html"
+    success_url = reverse_lazy('super:home')
 
-#     def form_valid(self, form: forms.BaseModelForm) -> HttpResponse:
-#         form.instance.event = get_object_or_404(Event, pk=self.kwargs['pk'])
-#         return super().form_valid(form)
+    def form_valid(self, form: forms.BaseModelForm) -> HttpResponse:
+        form.instance.event = get_object_or_404(Event, pk=self.kwargs['pk'])
+        return super().form_valid(form)
     
-# class BandUpdate(LoginRequiredMixin, UpdateView):
-#     model = Band
-#     fields = ['name']
-#     template_name = "display/form.html"
-#     success_url = reverse_lazy('display:main')
+class BandUpdate(LoginRequiredMixin, UpdateView):
+    model = Band
+    fields = ['name']
+    template_name = "display/form.html"
+    success_url = reverse_lazy('super:home')
 
-# class BandDelete(LoginRequiredMixin, DeleteView):
-#     model = Band
-#     fields = ['name']
-#     template_name = "display/confirm_delete.html"
-#     success_url = reverse_lazy('display:main')
+class BandDelete(LoginRequiredMixin, DeleteView):
+    model = Band
+    fields = ['name']
+    template_name = "display/confirm_delete.html"
+    success_url = reverse_lazy('super:home')
 
-# #Band Model Views
-# class BandMemberCreate(LoginRequiredMixin, CreateView):
-#     model = BandMember
-#     fields = ['member_section']
-#     template_name = "display/form.html"
-#     success_url = reverse_lazy('display:main')
+#Band Model Views
+class BandMemberCreate(LoginRequiredMixin, CreateView):
+    model = BandMember
+    template_name = "display/form.html"
+    form_class = BandMemberForm
+    success_url = reverse_lazy('super:home')
 
-#     def form_valid(self, form: forms.BaseModelForm) -> HttpResponse:
-#         form.instance.band = get_object_or_404(Band, pk=self.kwargs['pk'])
-#         return super().form_valid(form)
-    
-# class BandMemberUpdate(LoginRequiredMixin, UpdateView):
-#     model = BandMember
-#     fields = ['member_section']
-#     template_name = "display/form.html"
-#     success_url = reverse_lazy('display:main')
+    def form_valid(self, form: forms.BaseModelForm) -> HttpResponse:
+        form.instance.band = get_object_or_404(Band, pk=self.kwargs['pk'])
+        return super().form_valid(form)
 
-# class BandMemberDelete(LoginRequiredMixin, DeleteView):
-#     model = BandMember
-#     fields = ['member_section']
-#     template_name = "display/confirm_delete.html"
-#     success_url = reverse_lazy('display:main')
+class BandMemberDelete(LoginRequiredMixin, DeleteView):
+    model = BandMember
+    template_name = "display/confirm_delete.html"
+    success_url = reverse_lazy('super:home')
+
+    def get_object(self, queryset: QuerySet[Any] | None = ...) -> Model:
+        if queryset is None:
+            queryset = self.get_queryset()
+        band = self.kwargs["band_id"]
+        member = self.kwargs["member_id"]
+        obj = BandMember.objects.filter(band=band,member=member)
+        return obj

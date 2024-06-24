@@ -27,7 +27,7 @@
                     {% if user.is_authenticated %}
                     <li class="nav-item">
                         {% if user.is_superuser %}
-                        <a class="nav-link text-primary" href="{% url 'admin:index' %}">Admin</a>
+                            <a class="nav-link text-primary" href="{% url 'super:home' %}">Admin</a>
                         {% endif %}
                     </li>
 

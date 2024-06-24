@@ -1,0 +1,58 @@
+{% extends "base_bootstrap.html" %}
+
+{% block head %} {% endblock %}
+
+{% block navbar %}{% include "nav.html" %}{% endblock %}
+
+{% block welcome %} {% endblock %}
+
+{% block content %}
+
+<a class="btn btn-secondary" href="{% url 'super:home' %}">Back</a>
+
+<a class="btn btn-primary" href="{% url 'settings:admin' %}">Members' Event Contribution Page</a>
+
+<a class="btn btn-success" href="{% url 'display:bandmember_create' object.id %}">Add Band Member</a>
+
+<a class="btn btn-danger" href="{% url 'display:band_delete' object.id %}">Delete Band</a>
+
+<h2>{{ object }}</h2>
+{% if object %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Band Members</th>
+            <th scope="col">Sections</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if object.members.all %}
+            {% for band_member in object.members.all %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ band_member }}</td>
+                    <td>
+                        {% for membersection in membersection_list %}
+                            {% if membersection.member == band_member %}
+                                |{{ membersection.section }}{% if membersection.proficiency == 1 %} (L){% endif %}|
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" href="{% url 'display:bandmember_delete' band.id band_member.id %}">Remove</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+{% endif %}
+
+{% comment %}<a class="btn btn-primary" href="{% url 'display:bandmember_create' %}">Create Bandmember</a> {% endcomment %}
+
+
+{% endblock %}
+
+{% block footer %} {% endblock %}

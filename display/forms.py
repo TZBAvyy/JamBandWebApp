@@ -1,5 +1,5 @@
 from django import forms
-from display.models import Event, Practice, Band
+from display.models import Event, Practice, Band, BandMember, Member
 from datetime import datetime
 from django.utils.timezone import localtime, make_aware, now
 
@@ -11,6 +11,19 @@ class EventForm(forms.ModelForm):
             "date": forms.DateInput(attrs={'type':'date'}),
             "time": forms.TimeInput(attrs={'type': 'time'})
         }  
+    
+class BandMemberForm(forms.ModelForm):
+    member = forms.ModelChoiceField(queryset=Member.objects.filter())
+    class Meta:
+        model = BandMember
+        fields = ['member']
+
+class BandForm(forms.ModelForm):
+    members = forms.ModelMultipleChoiceField(queryset=Member.objects.filter(),
+                                             widget=forms.CheckboxSelectMultiple)
+    class Meta:
+        model = Band
+        fields = ['name','members']
 
 class PracticeForm(forms.ModelForm):
     band = forms.ModelChoiceField(queryset=Band.objects.filter(event__date__gt=datetime.now().date()))

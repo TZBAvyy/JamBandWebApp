@@ -9,7 +9,7 @@
 {% block welcome %} {% endblock %}
 
 {% block content %}
-
+<input type="submit" value="Back" onClick="javascript:history.go(-1);" class="btn btn-secondary">
 {% if object_list %}
     <table class="table">
         <thead>

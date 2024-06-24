@@ -55,7 +55,7 @@ class Event(models.Model):
     time = models.TimeField()
 
     class Meta:
-        ordering = ['date','time']
+        ordering = ['-date','-time']
 
     # Shows up in the admin list
     def __str__(self):
@@ -67,7 +67,7 @@ class Band(models.Model):
             max_length=200,
             validators=[MinLengthValidator(2, "Event name must be greater than 1 character")]
     )
-    event = models.ForeignKey('Event', models.CASCADE, null=False)
+    event = models.ForeignKey('Event', models.CASCADE, null=False, related_name='bands')
     members = models.ManyToManyField('Member', through='BandMember', related_name='bands')
 
     # Shows up in the admin list

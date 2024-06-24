@@ -28,7 +28,7 @@
     {{ form|crispy }}
 
     {% if user.is_superuser %}
-            <input type="submit" onclick="window.location='{% url 'settings:admin' %}' ; return false;" value="Admin List" class="btn text-primary">
+
     {% else %}
         <h6>Sections:</h6>
         {% if sections %}

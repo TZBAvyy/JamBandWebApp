@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'display.apps.DisplayConfig',
     'settings.apps.SettingsConfig',
+    'super.apps.SuperConfig',
 
     #Django defaults
     'django.contrib.admin',

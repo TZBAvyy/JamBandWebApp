@@ -1,0 +1,57 @@
+{% extends "base_bootstrap.html" %}
+
+{% block head %} {% endblock %}
+
+{% block navbar %}{% include "nav.html" %}{% endblock %}
+
+{% block welcome %} 
+
+{% endblock %}
+
+{% block content %}
+
+<input type="submit" value="Back" onClick="javascript:history.go(-1);" class="btn btn-secondary">
+
+<a class="btn btn-primary" href="{% url 'settings:admin' %}">Members' Event Contribution Page</a>
+
+<a class="btn btn-success" href="{% url 'display:event_create' %}">Create Event</a>
+
+<h3 class="text-danger">Warning! Do not delete past events! This is to ensure proper history taking!</h3>
+{% if object_list %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Events</th>
+            <th scope="col">Date & Time</th>
+            <th scope="col">Bands</th>
+            <th scope="col">Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for event in object_list %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ event.name }}</td>
+            <td>{{ event.date }} | {{ event.time }}</td>
+            <td>
+                <a class="btn btn-success" href="{% url 'display:band_create' event.id %}">Create</a>
+                {% for band in event.bands.all %}
+                <a class="btn btn-primary" href="{% url 'super:detail' band.id %}">{{ band }}</a>
+                {% endfor %}
+            </td>
+            <td>
+                <a class="btn btn-success" href="{% url 'display:event_update' event.id %}">Update</a>
+                <a class="btn btn-danger" href="{% url 'display:event_delete' event.id %}">Delete</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+{% endif %}
+
+<a class="btn btn-primary" href="{% url 'admin:index' %}">Admin Page</a>
+
+{% endblock %}
+
+{% block footer %} {% endblock %}
