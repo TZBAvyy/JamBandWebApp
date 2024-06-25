@@ -1,5 +1,6 @@
 from django import forms
-from display.models import Event, Practice, Band, BandMember, Member
+from django.db.models import Q
+from .models import Event, Practice, Band, BandMember, Member
 from datetime import datetime
 from django.utils.timezone import localtime, make_aware, now
 
@@ -13,17 +14,20 @@ class EventForm(forms.ModelForm):
         }  
     
 class BandMemberForm(forms.ModelForm):
-    member = forms.ModelChoiceField(queryset=Member.objects.filter())
+    def __init__(self, *args, **kwargs):
+        pk = kwargs.pop('band_pk')
+        super().__init__(*args, **kwargs)
+        self.fields['member'].queryset = Member.objects.filter(~Q(bands__id=pk))
+
     class Meta:
         model = BandMember
         fields = ['member']
 
 class BandForm(forms.ModelForm):
-    members = forms.ModelMultipleChoiceField(queryset=Member.objects.filter(),
-                                             widget=forms.CheckboxSelectMultiple)
     class Meta:
         model = Band
         fields = ['name','members']
+        widgets = {'members':forms.CheckboxSelectMultiple}
 
 class PracticeForm(forms.ModelForm):
     band = forms.ModelChoiceField(queryset=Band.objects.filter(event__date__gt=datetime.now().date()))

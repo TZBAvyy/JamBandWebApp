@@ -9,8 +9,8 @@ from django.views import View
 from typing import Any
 import json
 
-from display.models import *
-from display.forms import *
+from .models import *
+from .forms import *
 # Create your views here.
 
 class Main(View):
@@ -117,6 +117,11 @@ class BandMemberCreate(LoginRequiredMixin, CreateView):
     template_name = "display/form.html"
     form_class = BandMemberForm
     success_url = reverse_lazy('super:home')
+
+    def get_form_kwargs(self) -> dict[str, Any]:
+        kwargs = super(BandMemberCreate, self).get_form_kwargs()
+        kwargs['band_pk'] = self.kwargs['pk']
+        return kwargs
 
     def form_valid(self, form: forms.BaseModelForm) -> HttpResponse:
         form.instance.band = get_object_or_404(Band, pk=self.kwargs['pk'])
