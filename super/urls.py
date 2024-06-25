@@ -1,5 +1,5 @@
 from django.urls import path
-from super.views import SuperView, BandDetailView
+from .views import SuperView, BandDetailView
 
 app_name = "super"
 urlpatterns = [

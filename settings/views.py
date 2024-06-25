@@ -6,7 +6,7 @@ from django.views.generic.list import ListView
 
 from display.models import Member, MemberSection
 from django.contrib.auth.models import User
-from settings.models import UserProfile
+from .models import UserProfile
 
 class ProfileView(LoginRequiredMixin, UpdateView):
     model = User

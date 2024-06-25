@@ -1,5 +1,5 @@
 from django.urls import path
-from settings.views import ProfileView, AdminView
+from .views import ProfileView, AdminView
 
 app_name = "settings"
 urlpatterns = [
