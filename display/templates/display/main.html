@@ -10,9 +10,11 @@
                     var eventObj = info.event;
                     window.open(eventObj.url,_self);
                 },
+                contentHeight:"auto",
                 themeSystem: 'bootstrap5',
                 initialView: 'timeGridWeek',
                 scrollTime: '12:00:00',
+                slotMinTime: '08:00:00',
                 headerToolbar: {
                     left: 'prev,next',
                     center: 'title',
@@ -21,6 +23,19 @@
                 buttonText: {
                     dayGridMonth: "Month",
                     timeGridWeek: "Week"
+                },
+                footerToolbar: {
+                    left:'',
+                    center:'scrollTop',
+                    right:''
+                },
+                customButtons: {
+                    scrollTop: {
+                        text: 'Back to top',
+                        click: function() {
+                            window.scrollTo(0, 0);
+                        }
+                    }
                 },
                 events: {{ practices_json|safe }}
             });
@@ -37,75 +52,52 @@
 {% endblock %}
 
 {% block welcome %} 
-    <h1>Schedule, Edit or Delete a Practice Session</h1>
+    <h1>Practice Scheduler App</h1>
 {% endblock %}
 
 {% block content %} 
 
 <div class="row">
-    <div class="col-lg-8">
+    {% if practice_list %}
+    <table class="table table-hover table-bordered border-primary table-sm caption-top">
+        <caption>
+            <a href="{% url 'display:practice_create' %}" class="btn btn-primary" role="button">Schedule new practice</a>
+            <a href="#calendar" class="btn btn-primary" role="button" onclick="">Scroll to Schedule</a>
+        </caption>
+
+        <thead>
+            <tr class="table-dark">
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Band</th>
+                <th scope="col">Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for practice in practice_list %}
+            <tr class="">
+                <td>{{ practice.date }}</td>
+                <td>{{ practice.startTime|date:'f a' }}-{{ practice.endTime|date:'f a' }}</td>
+                <td>{{ practice.band }}</td>
+                <td>
+                    <a href="{% url 'display:practice_update' practice.id %}" class="btn btn-success" role="button">Update</a>
+                    <a href="{% url 'display:practice_delete' practice.id %}" class="btn btn-danger" role="button">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>There are no practices scheduled.</p>
+    {% endif %}
+</div>
+
+<div class="row mb-3">
+    <div class="col-lg">
         <h3>Schedule for Practices</h3>
         <div id="calendar"></div>
     </div>
-    <div class="col-lg">
-        <h3 class="mt-5 pt-5">Practices</h3>
-        <a href="{% url 'display:practice_create' %}" class="btn btn-primary" role="button">Schedule new practice</a>
-        {% if practice_list %}
-        <ul>
-            {% for practice in practice_list %}
-            <li class="py-2">
-                <b>[{{ practice.date }}]</b><br/>
-                <b>[{{ practice.startTime }} to {{ practice.endTime }}]</b><br/>
-                <b>{{ practice.band }}</b> is practicing<br/>
-                <a href="{% url 'display:practice_update' practice.id %}" class="btn btn-success" role="button">Edit</a>
-                <a href="{% url 'display:practice_delete' practice.id %}" class="btn btn-danger" role="button">Delete</a>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-            <p>There are no practices scheduled.</p>
-        {% endif %}
-    </div>
 </div>
-
-{% comment %} <div class="row">
-    <h3>Events [<a href="{% url 'display:event_create' %}">+</a>]</h3>
-    {% if event_list %}
-        <ul class="row">
-            {% for event in event_list %}
-                <li class="col-md-6">
-                    <a href="{% url 'display:event_update' event.id %}">{{event}}</a> [{{ event.date }} {{ event.time }}]
-                    [<a href="{% url 'display:event_delete' event.id %}">Delete</a>] <br/>
-                    <h5>Bands: [<a href="{% url 'display:band_create' event.id %}">+</a>]</h5>
-                    <ul>
-                    {% for band in band_list %}
-                        {% if band.event.id == event.id %}
-                            <li>
-                                <a href="{% url 'display:band_update' band.id %}">{{ band.name }}</a> 
-                                [<a href="{% url 'display:band_delete' band.id %}">Delete</a>]<br/>
-                                <h6>Members: [<a href="{% url 'display:bandmember_create' band.id %}">+</a>]</h6>
-                                <ul>
-                                    {% for bandmember in bandmember_list %}
-                                        {% if bandmember.band.id == band.id %}
-                                            <li>
-                                                {{ bandmember.member_section }}
-                                                [<a href="{% url 'display:bandmember_update' bandmember.id %}">Update</a> |
-                                                <a href="{% url 'display:bandmember_delete' bandmember.id %}">Delete</a>]
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul><br/>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                    </ul><br/>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>There are no event in the library.</p>
-    {% endif %}
-</div> {% endcomment %}
 
 {% endblock %}
 

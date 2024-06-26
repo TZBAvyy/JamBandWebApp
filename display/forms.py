@@ -1,8 +1,7 @@
 from django import forms
 from django.db.models import Q
 from .models import Event, Practice, Band, BandMember, Member
-from datetime import datetime
-from django.utils.timezone import localtime, make_aware, now
+from datetime import datetime, time
 
 class EventForm(forms.ModelForm):
     class Meta:
@@ -45,16 +44,22 @@ class PracticeForm(forms.ModelForm):
         start = cleaned_data.get('startTime')
         end = cleaned_data.get('endTime')
 
-        if start > end: #start and end time validation
-            raise forms.ValidationError(f"Start time cannot be later than end time! (No overnighters!)")
+        if end==time(0,0):
+            pass
+        elif start > end: #start and end time validation
+            raise forms.ValidationError("Start time cannot be later than end time!")
         
         date = cleaned_data.get('date')
 
         #Checks for if the current datetime > date + startTime to prevent booking of the room in the past
-        datestartTime = make_aware(datetime.combine(date,start))
-        datetimeNow = localtime(now())
-        if datetimeNow>datestartTime:
+        dateNow = datetime.now().date()
+        time8am = time(8,0)
+        
+        if dateNow>date:
             raise forms.ValidationError("Error, cannot book a practice in the past")
+        
+        if time8am>start:
+            raise forms.ValidationError("Error, cannot book a practice before 8am")
 
         conflicts = Practice.objects.filter(
                 date=date,
