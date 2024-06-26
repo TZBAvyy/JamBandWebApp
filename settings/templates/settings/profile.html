@@ -27,14 +27,18 @@
     {% csrf_token %}
     {{ form|crispy }}
 
+    <input type="submit" value="Update" class="btn btn-primary">
+</form>
+
+<div class="container mt-3">
     {% if user.is_superuser %}
 
     {% else %}
         <h6>Sections:</h6>
         {% if sections %}
             <ul>
-                {% for section in sections %}
-                    <li>{{ section }}</li>
+                {% for membersection in sections %}
+                    <li>{{ membersection.section }} {% if membersection.proficiency == 1 %}(L){% endif %}</li>
                 {% endfor %}
             </ul>
         {% else %}
@@ -52,11 +56,7 @@
             <p>You are not in any bands currently!</p>
         {% endif %}
     {% endif %}
-
-
-    <input type="submit" value="Update" class="btn text-primary">
-    <input type="submit" onclick="window.location='{% url 'home:home' %}' ; return false;" value="Cancel" class="btn text-primary">
-</form>
+</div>
 
 {% endblock %}
 

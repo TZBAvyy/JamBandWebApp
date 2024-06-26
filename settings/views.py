@@ -1,4 +1,5 @@
 from typing import Any
+from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.views.generic.edit import UpdateView
@@ -22,8 +23,8 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
         member = UserProfile.objects.get(user=context["object"]).member
         if member:
-            context["sections"] = member.sections.all()
-            context["bands"] = member.bands.all()
+            context["sections"] = MemberSection.objects.filter(member=member)
+            context["bands"] = member.bands.filter(event__date__gt=datetime.now().date())
             context["matric"] = context["object"].username[:-5] + "****" + context["object"].username[-1]
         else:
             context["sections"] = ""

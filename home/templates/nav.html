@@ -24,27 +24,39 @@
                 </ul>
 
                 <ul class="navbar-nav w-100 justify-content-end">
+
                     {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        {% if user.is_superuser %}
-                            <a class="nav-link text-primary" href="{% url 'super:home' %}">Admin</a>
-                        {% endif %}
-                    </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link text-primary" href="{% url 'settings:profile' user.id %}">Settings</a>
-                    </li>
+                        <li class="nav-item dropdown">
 
-                    <li class="nav-item">
-                        <form method="post" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-link nav-link text-primary">Logout</button>
-                        </form>
-                    </li>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ user.first_name }}
+                            </a>
+
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    {% if user.is_superuser %}
+                                        <a class="dropdown-item text-primary" href="{% url 'super:home' %}">Admin</a>
+                                    {% endif %}
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item text-primary" href="{% url 'settings:profile' user.id %}">Settings</a>
+                                </li>
+                            </ul>
+                            
+                        </li>
+                        
+                        <li class="nav-item">
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link nav-link text-dark btn-outline-primary px-2">Logout</button>
+                            </form>
+                        </li>
 
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="{% url 'login' %}">Login</a>
+                        <a style="text-decoration: none;" class="btn btn-link text-dark btn-outline-primary px-2" href="{% url 'login' %}">Login</a>
                     </li>
                     {% endif %}
                 </ul>
