@@ -15,12 +15,12 @@
 <a class="btn btn-primary" href="{% url 'settings:admin' %}">Members' Event Contribution Page</a>
 
 <h3 class="text-danger">Warning! Do not delete past events! This is to ensure proper history taking!</h3>
-<a class="btn btn-success" href="{% url 'display:event_create' %}">Create Event</a>
 
 {% if object_list %}
-    <table class="table">
+    <table class="table table-hover table-bordered border-primary table-sm caption-top">
+        <caption><a class="btn btn-success" href="{% url 'display:event_create' %}">Create Event</a></caption>
         <thead>
-        <tr>
+        <tr class="table-dark">
             <th scope="col">#</th>
             <th scope="col">Events</th>
             <th scope="col">Date & Time</th>
@@ -31,20 +31,29 @@
     <tbody>
     {% for event in object_list %}
         <tr class="{% if dateNow > event.date %}table-danger{% else %}table-success{% endif %}">
+            {% comment %} Row Counter {% endcomment %}
             <th scope="row">{{ forloop.counter }}</th>
+
+            {% comment %} Event Name {% endcomment %}
             <td>
                 {{ event.name }}
                 {% if dateNow > event.date %}
                     [ENDED]
                 {% endif %}
             </td>
+
+            {% comment %} Date | Time {% endcomment %}
             <td>{{ event.date }} | {{ event.time }}</td>
+
+            {% comment %} Bands {% endcomment %}
             <td>
                 <a class="btn btn-success" href="{% url 'display:band_create' event.id %}">Create</a>
                 {% for band in event.bands.all %}
                 <a class="btn btn-primary" href="{% url 'super:detail' band.id %}">{{ band }}</a>
                 {% endfor %}
             </td>
+
+            {% comment %} Event Editor {% endcomment %}
             <td>
                 <a class="btn btn-success" href="{% url 'display:event_update' event.id %}">Update</a>
                 <a class="btn btn-danger" href="{% url 'display:event_delete' event.id %}">Delete</a>

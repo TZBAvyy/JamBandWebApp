@@ -1,17 +1,22 @@
 <!-- NAVBAR TEMPLATE FOR ALL NON-FORM HTML TEMPLATES -->
+{% load static %}
 {% block navbar %} 
 <div class="container-fluid">
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
+
+            <div class="navbar-brand text-dark">
+                <img alt="" src="{% static 'images/logo.png' %}" width="30" height="35" class="pb-1">
+                Universe
+            </div>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse w-100" id="navbarToggle">
                 <div class="navbar-brand text-dark w-100"></div>
-                <ul class="navbar-nav w-100 justify-content-center">
-                    <li class="nav-item">
-                        <div class="navbar-brand text-dark">Universe</div>
-                    </li>
+
+                <ul class="navbar-nav w-100">
                     <li class="nav-item">
                         <a class="nav-link text-primary" href="{% url 'home:home' %}">Home</a>
                     </li>

@@ -15,12 +15,12 @@
 <a class="btn btn-danger" href="{% url 'display:band_delete' object.id %}">Delete Band</a>
 
 <h2>{{ object }}</h2>
-<a class="btn btn-success" href="{% url 'display:bandmember_create' object.id %}">Add Band Member</a>
 
 {% if object %}
-    <table class="table">
+    <table class="table table-hover table-sm caption-top">
+        <caption><a class="btn btn-success" href="{% url 'display:bandmember_create' object.id %}">Add Band Member</a></caption>
         <thead>
-        <tr>
+        <tr class="table-dark">
             <th scope="col">#</th>
             <th scope="col">Band Members</th>
             <th scope="col">Sections</th>
@@ -30,7 +30,7 @@
         <tbody>
         {% if object.members.all %}
             {% for band_member in object.members.all %}
-                <tr>
+                <tr class="table-light">
                     <th scope="row">{{ forloop.counter }}</th>
                     <td>{{ band_member }}</td>
                     <td>
