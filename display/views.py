@@ -54,19 +54,19 @@ class MemberView(LoginRequiredMixin, View):
 class EventCreate(LoginRequiredMixin, CreateView):
     model = Event
     form_class = EventForm
-    template_name = "display/form.html"
+    template_name = "super/form.html"
     success_url = reverse_lazy('super:home')
 
 class EventUpdate(LoginRequiredMixin, UpdateView):
     model = Event
     form_class = EventForm
-    template_name = "display/form.html"
+    template_name = "super/form.html"
     success_url = reverse_lazy('super:home')
 
 class EventDelete(LoginRequiredMixin, DeleteView):
     model = Event
     fields = '__all__'
-    template_name = "display/confirm_delete.html"
+    template_name = "super/confirm_delete.html"
     success_url = reverse_lazy('super:home')
 
 #Practice Model Views
@@ -92,7 +92,7 @@ class PracticeDelete(LoginRequiredMixin, DeleteView):
 class BandCreate(LoginRequiredMixin, CreateView):
     model = Band
     form_class = BandForm
-    template_name = "display/form.html"
+    template_name = "super/form.html"
     success_url = reverse_lazy('super:home')
 
     def form_valid(self, form: forms.BaseModelForm) -> HttpResponse:
@@ -102,19 +102,19 @@ class BandCreate(LoginRequiredMixin, CreateView):
 class BandUpdate(LoginRequiredMixin, UpdateView):
     model = Band
     fields = ['name']
-    template_name = "display/form.html"
+    template_name = "super/form.html"
     success_url = reverse_lazy('super:home')
 
 class BandDelete(LoginRequiredMixin, DeleteView):
     model = Band
     fields = ['name']
-    template_name = "display/confirm_delete.html"
+    template_name = "super/confirm_delete.html"
     success_url = reverse_lazy('super:home')
 
 #Band Model Views
 class BandMemberCreate(LoginRequiredMixin, CreateView):
     model = BandMember
-    template_name = "display/form.html"
+    template_name = "super/form.html"
     form_class = BandMemberForm
     success_url = reverse_lazy('super:home')
 
@@ -129,7 +129,7 @@ class BandMemberCreate(LoginRequiredMixin, CreateView):
 
 class BandMemberDelete(LoginRequiredMixin, DeleteView):
     model = BandMember
-    template_name = "display/confirm_delete.html"
+    template_name = "super/confirm_delete.html"
     success_url = reverse_lazy('super:home')
 
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> Model:
