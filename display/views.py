@@ -13,6 +13,22 @@ from .models import *
 from .forms import *
 # Create your views here.
 
+def createPracJson():
+    practices = Practice.objects.all()
+    if practices:
+        practices_json = []
+        for practice in practices:
+            practices_json.append({
+                'title':practice.band.name,
+                'url': reverse('display:practice_update',args=[practice.id]),
+                'start':practice.date.strftime("%Y-%m-%dT")+practice.startTime.strftime("%H:%M"),
+                'end':practice.date.strftime("%Y-%m-%dT")+practice.endTime.strftime("%H:%M")
+            })
+        practices_json = json.dumps(practices_json)
+    else:
+        practices_json = json.dumps({})
+    return practices_json
+
 class Main(View):
     ctx = {
         "description":"Universe also known as Hall 1 Jam Band's Webpage",
@@ -20,23 +36,11 @@ class Main(View):
     }
 
     def get(self, request):
-        practices = Practice.objects.all()
-        self.ctx["practice_list"] = practices
+        self.ctx["practice_list"] = Practice.objects.all()
         self.ctx["event_list"] = Event.objects.all()
         self.ctx["band_list"] = Band.objects.all()
         self.ctx["bandmember_list"] = BandMember.objects.all()
-        if practices:
-            practices_json = []
-            for practice in practices:
-                practices_json.append({
-                    'title':practice.band.name,
-                    'url': reverse('display:practice_update',args=[practice.id]),
-                    'start':practice.date.strftime("%Y-%m-%dT")+practice.startTime.strftime("%H:%M"),
-                    'end':practice.date.strftime("%Y-%m-%dT")+practice.endTime.strftime("%H:%M")
-                })
-            self.ctx["practices_json"] = json.dumps(practices_json)
-        else:
-            self.ctx["practices_json"] = json.dumps({})
+        self.ctx["practices_json"] = createPracJson()
         return render(request=request, template_name="display/main.html", context=self.ctx)
     
 class MemberView(LoginRequiredMixin, View):
@@ -50,6 +54,36 @@ class MemberView(LoginRequiredMixin, View):
         self.ctx["membersection_list"] = MemberSection.objects.all().order_by('-proficiency')
         return render(request=request, template_name="display/members.html", context=self.ctx)
 
+#Practice Model Views
+class PracticeCreate(LoginRequiredMixin, CreateView):
+    model = Practice
+    form_class = PracticeForm
+    template_name = "display/form.html"
+    success_url = reverse_lazy('display:main')
+
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["practices_json"] = createPracJson()
+        return context
+
+class PracticeUpdate(LoginRequiredMixin, UpdateView):
+    model = Practice
+    form_class = UpdatePracForm
+    template_name = "display/form.html"
+    success_url = reverse_lazy('display:main')
+    
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["practices_json"] = createPracJson()
+        return context
+
+class PracticeDelete(LoginRequiredMixin, DeleteView):
+    model = Practice
+    fields = '__all__'
+    template_name = "display/confirm_delete.html"
+    success_url = reverse_lazy('display:main')
+
+#THESE VIEWS ARE FOR SUPERUSER APP
 #Event Model Views
 class EventCreate(LoginRequiredMixin, CreateView):
     model = Event
@@ -68,25 +102,6 @@ class EventDelete(LoginRequiredMixin, DeleteView):
     fields = '__all__'
     template_name = "super/confirm_delete.html"
     success_url = reverse_lazy('super:home')
-
-#Practice Model Views
-class PracticeCreate(LoginRequiredMixin, CreateView):
-    model = Practice
-    form_class = PracticeForm
-    template_name = "display/form.html"
-    success_url = reverse_lazy('display:main')
-
-class PracticeUpdate(LoginRequiredMixin, UpdateView):
-    model = Practice
-    form_class = PracticeForm
-    template_name = "display/form.html"
-    success_url = reverse_lazy('display:main')
-
-class PracticeDelete(LoginRequiredMixin, DeleteView):
-    model = Practice
-    fields = '__all__'
-    template_name = "display/confirm_delete.html"
-    success_url = reverse_lazy('display:main')
 
 #Band Model Views & Forms
 class BandCreate(LoginRequiredMixin, CreateView):

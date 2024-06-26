@@ -1,16 +1,77 @@
 {% extends "base_bootstrap.html" %}
 
+{% block head %} 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                eventClick: function(info) {
+                    var eventObj = info.event;
+                    window.open(eventObj.url,_self);
+                },
+                contentHeight:"auto",
+                themeSystem: 'bootstrap5',
+                initialView: 'timeGridWeek',
+                scrollTime: '12:00:00',
+                slotMinTime: '08:00:00',
+                headerToolbar: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek'
+                },
+                buttonText: {
+                    dayGridMonth: "Month",
+                    timeGridWeek: "Week"
+                },
+                footerToolbar: {
+                    left:'',
+                    center:'scrollTop',
+                    right:''
+                },
+                customButtons: {
+                    scrollTop: {
+                        text: 'Back to top',
+                        click: function() {
+                            window.scrollTo(0, 0);
+                        }
+                    }
+                },
+                events: {{ practices_json|safe }}
+            });
+            
+            calendar.render();
+        });
+    </script>
+{% endblock %}
+
+{% block navbar %}
+    {% include "nav.html" %}
+{% endblock %}
+
 {% block welcome %} 
-    <h1>Create/Update</h1>
-    <h3>{{ object }}</h3>
+    {% if object %}
+        <h2>Update Practice for {{ object.band }}</h2>
+        <h4>Previous: {{ object.date|date:'l, d/m/Y' }} from {{object.startTime|date:'h:i:s'}} to {{object.endTime|date:'h:i:s'}}</h4>
+    {% else %}
+        <h2>Schedule Practice</h2>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
+<div class="row">
     <form action="" method="post">
         {% load crispy_forms_tags %}
         {% csrf_token %}
         {{ form|crispy }}
+        {{ form.band.as_hidden }}
         <input type="submit" value="Submit">
         <input type="submit" onclick="window.location='{% url 'display:main' %}' ; return false;" value="Cancel">
     </form>
+</div>
+
+<div class="row my-3">
+    <div class="col-lg">
+        <div id="calendar"></div>
+    </div>
+</div>
 {% endblock %}
