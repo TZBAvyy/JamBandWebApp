@@ -1,20 +1,33 @@
 services:
   app:
     build: .
+    restart: always
     volumes:
       - .:/django
     ports:
       - 8000:8000
+    env_file:
+      - .env
     image: pythonanywhere:django
     container_name: django_app
-    command: python manage.py runserver 0.0.0.0:8000
+    command: sh -c "python3 manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
     depends_on:
       db:
-        condition: service_completed_successfully
+        condition: service_healthy
   db:
     image: mysql
+    container_name: django_db
+    restart: always
     environment:
-      MYSQL_DATABASE: 'django-app-db'
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
     volumes:
       - ./data/mysql/dbb:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysql", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}", "-e", "SELECT 1"]
+      timeout: 20s
+      retries: 10
