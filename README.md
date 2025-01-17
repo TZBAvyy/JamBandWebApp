@@ -1,6 +1,7 @@
 # Welcome to my personal project
 # Universe (H1 JamBand)'s Official Website!
 Made by Avisena Gibraltar
+> UPDATE: project moved to https://github.com/TZBAvyy/jamband-website
 
 ## Description
 This is a Web Application to facilitate Hall 1 Jam Band Activities including but not limited to:
